@@ -12,6 +12,24 @@ spring:
     view:
       suffix: .html
       prefix: /
+# ok http 配置
+ok:
+  http:
+    connect-timeout: 60
+    read-timeout: 60
+    write-timeout: 60
+    # 连接池中整体的空闲连接的最大数量
+    max-idle-connections: 200
+    # 连接空闲时间最多为 300 秒
+    keep-alive-duration: 300
 
 mybatis:
   mapper-locations: classpath*:mapper/*Mapper.xml
+  configuration:
+    # 打印sql
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+config:
+  tianapi:
+    apikey: 7e68febcbcfe148cef9f949c24d50a6e
+    common-url: https://apis.tianapi.com
