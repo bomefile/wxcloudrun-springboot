@@ -1,5 +1,6 @@
 package com.tencent.wxcloudrun.service;
 
+import com.tencent.wxcloudrun.config.Constants;
 import com.tencent.wxcloudrun.dto.SignCheckResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.bouncycastle.crypto.params.Ed25519PrivateKeyParameters;
@@ -16,13 +17,10 @@ public class SignService {
 
     private static final int SEED_SIZE = 32;
 
-    private static final long appId = 11111111;
-    private static final String secret = "DG5g3B4j9X2KOErG";
-
 
     public SignCheckResponse check(String eventTs, String plainToken) {
         log.info("sign check start: event_ts={}, plain_token_len={}", eventTs, plainToken == null ? null : plainToken.length());
-        String seedStr = secret;
+        String seedStr = Constants.secret;
         while (seedStr.length() < SEED_SIZE) {
             seedStr = seedStr + seedStr;
         }
