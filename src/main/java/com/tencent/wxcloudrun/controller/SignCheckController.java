@@ -27,6 +27,7 @@ public class SignCheckController {
                 signCheckRequest.getEventTs(),
                 signCheckRequest.getPlainToken());
         SignCheckResponse rsp = signService.check(signCheckRequest.getEventTs(), signCheckRequest.getPlainToken());
+        log.info("sign check response: signature_len={}", rsp.getSignature() == null ? 0 : rsp.getSignature().length());
         return ApiResponse.ok(rsp);
     }
 }

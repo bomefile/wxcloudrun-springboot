@@ -21,6 +21,7 @@ public class SignService {
 
 
     public SignCheckResponse check(String eventTs, String plainToken) {
+        log.info("sign check start: event_ts={}, plain_token_len={}", eventTs, plainToken == null ? null : plainToken.length());
         String seedStr = secret;
         while (seedStr.length() < SEED_SIZE) {
             seedStr = seedStr + seedStr;
@@ -44,12 +45,13 @@ public class SignService {
             log.error("generate signature failed:", e);
             return null;
         }
+        byte[] msgBytes = msg.toByteArray();
+        log.info("sign check message size={} bytes", msgBytes.length);
 
         String signature;
         try {
             Ed25519Signer signer = new Ed25519Signer();
             signer.init(true, privateKey);
-            byte[] msgBytes = msg.toByteArray();
             signer.update(msgBytes, 0, msgBytes.length);
             byte[] sig = signer.generateSignature();
             signature = toHex(sig);
@@ -57,6 +59,10 @@ public class SignService {
             log.error("generate signature failed:", e);
             return null;
         }
+        int hexLen = signature == null ? 0 : signature.length();
+        String head = signature == null ? null : (signature.length() >= 8 ? signature.substring(0, 8) : signature);
+        String tail = signature == null ? null : (signature.length() >= 8 ? signature.substring(signature.length() - 8) : signature);
+        log.info("sign check success: signature_len={}, head={}, tail={}", hexLen, head, tail);
 
         return SignCheckResponse.builder().signature(signature).plainToken(plainToken).build();
     }
