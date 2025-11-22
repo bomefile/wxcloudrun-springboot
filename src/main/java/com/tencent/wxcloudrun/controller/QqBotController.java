@@ -26,7 +26,7 @@ public class QqBotController {
     public SignCheckResponse callbackCheck(@RequestBody BotCallEventReq botCallEventReq) {
         log.info("[callbackCheck]botCallEventReq: botCallEventReq={}", botCallEventReq);
         SignCheckResponse rsp = signService.check(botCallEventReq.getId(), botCallEventReq.getD().getPlainToken());
-        log.info("[callbackCheck]response: signature_len={}", rsp.getSignature() == null ? 0 : rsp.getSignature().length());
+        log.info("[callbackCheck]response: signature={}", rsp);
         return rsp;
     }
 

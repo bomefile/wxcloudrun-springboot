@@ -18,9 +18,9 @@ public class SignService {
     private static final int SEED_SIZE = 32;
 
 
-    public SignCheckResponse check(String eventTs, String plainToken) {
+    public SignCheckResponse check(String eventTs, String plainToken, String secret) {
         log.info("sign check start: event_ts={}, plain_token_len={}", eventTs, plainToken == null ? null : plainToken.length());
-        String seedStr = Constants.secret;
+        String seedStr = secret;
         while (seedStr.length() < SEED_SIZE) {
             seedStr = seedStr + seedStr;
         }
@@ -63,6 +63,10 @@ public class SignService {
         log.info("sign check success: signature_len={}, head={}, tail={}", hexLen, head, tail);
 
         return SignCheckResponse.builder().signature(signature).plainToken(plainToken).build();
+    }
+
+    public SignCheckResponse check(String eventTs, String plainToken) {
+        return check(eventTs, plainToken, Constants.secret);
     }
 
     private static byte[] stringBytes(String s) {
