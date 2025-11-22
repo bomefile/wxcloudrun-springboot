@@ -16,7 +16,7 @@ public class TokenService {
     public String getToken() {
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Type", "application/json");
-        String payload = "{\"appId\":\"" + Constants.appId + "\",\"secret\":\"" + Constants.secret + "\"}";
+        String payload = "{\"appId\":\"" + Constants.appId + "\",\"clientSecret\":\"" + Constants.secret + "\"}";
         log.info("getToken start url={}, appId={}, payload_len={}", Constants.token_url, Constants.appId, payload.length());
         String resp = RestTemplateUtil.postFormByJson(Constants.token_url, payload, headers, false);
         log.info("getToken response len={}", resp == null ? null : resp.length());
