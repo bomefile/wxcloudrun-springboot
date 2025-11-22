@@ -2,7 +2,6 @@ package com.tencent.wxcloudrun.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.JsonNode;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,7 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class BotCallEventResp {
+public class BotCallEventReq {
 
   @JsonProperty("id")
   private String id;
@@ -20,7 +19,17 @@ public class BotCallEventResp {
   private Integer op;
 
   @JsonProperty("d")
-  private JsonNode d;
+  private SignCheckRequest.D d;
+
+  @Data
+  @JsonIgnoreProperties(ignoreUnknown = true)
+  public static class D {
+    @JsonProperty("plain_token")
+    private String plainToken;
+
+    @JsonProperty("event_ts")
+    private String eventTs;
+  }
 
   @JsonProperty("s")
   private Integer s;

@@ -1,15 +1,13 @@
 package com.tencent.wxcloudrun.controller;
 
 import com.tencent.wxcloudrun.config.ApiResponse;
-import com.tencent.wxcloudrun.dto.BotCallEventResp;
+import com.tencent.wxcloudrun.dto.BotCallEventReq;
 import com.tencent.wxcloudrun.dto.SignCheckRequest;
 import com.tencent.wxcloudrun.dto.SignCheckResponse;
 import com.tencent.wxcloudrun.service.SignService;
+import com.tencent.wxcloudrun.service.TokenService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 
@@ -21,19 +19,20 @@ public class QqBotController {
     @Resource
     private SignService signService;
 
+    @Resource
+    private TokenService tokenService;
+
     @PostMapping("/callback/check")
-    public ApiResponse callbackCheck(@RequestBody SignCheckRequest signCheckRequest) {
-        log.info("sign check request body: op={}, event_ts={}, plain_token={}",
-                signCheckRequest.getOp(),
-                signCheckRequest.getEventTs(),
-                signCheckRequest.getPlainToken());
-        SignCheckResponse rsp = signService.check(signCheckRequest.getEventTs(), signCheckRequest.getPlainToken());
+    public SignCheckResponse callbackCheck(@RequestBody BotCallEventReq botCallEventReq) {
+        log.info("botCallEventReq: botCallEventReq={}", botCallEventReq);
+        SignCheckResponse rsp = signService.check(botCallEventReq.getId(), botCallEventReq.getD().getPlainToken());
         log.info("sign check response: signature_len={}", rsp.getSignature() == null ? 0 : rsp.getSignature().length());
-        return ApiResponse.ok(rsp);
+        return rsp;
     }
 
-    @PostMapping("/callback/msg")
-    public void callbackMsg(@RequestBody BotCallEventResp botCallEventResp) {
-        log.info("callbackMsg: botCallEventResp={}", botCallEventResp);
+    @GetMapping("token/get")
+    public String getToken() {
+        return tokenService.getToken();
     }
+
 }
