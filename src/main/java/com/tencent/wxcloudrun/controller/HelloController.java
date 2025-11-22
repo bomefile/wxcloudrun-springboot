@@ -19,6 +19,6 @@ public class HelloController {
 
     @RequestMapping("/hello2")
     public ResponseEntity hello2() {
-        return RestHttpResponses.createSuccess("hello world");
+        return RestHttpResponses.createSuccess("hello world2");
     }
 }
